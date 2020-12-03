@@ -2,7 +2,7 @@ Deep Learning
 ===
 
 ## Overview
-This repository contains notebooks and scripts introducing the different topics in Deep Learning beginning from Neural Networks to Transformers which will be implemented in PyTorch.
+This repository contains notebooks and scripts introducing the different topics in Deep Learning beginning from Neural Networks to Transformers.
 
 ## License
 ```
