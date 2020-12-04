@@ -3,6 +3,10 @@
 import numpy as np
 
 
+def tanh_prime(z):
+    return 1 - np.square(tanh(z))
+
+
 def sigmoid_prime(z):
     return sigmoid(z) * (1 - sigmoid(z))
 
