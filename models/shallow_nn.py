@@ -3,6 +3,12 @@
 import numpy as np
 
 
+def sigmoid(z):
+    numerator = 1
+    denominator = np.add(1, np.exp(-z))
+    return numerator / denominator
+
+
 def main():
     pass
 
