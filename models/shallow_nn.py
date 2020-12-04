@@ -3,9 +3,13 @@
 import numpy as np
 
 
+def relu(z):
+    return np.maximum(0, z)
+
+
 def tanh(z):
-    numerator = np.subtract(np.exp(x), np.exp(-x))
-    denominator = np.add(np.exp(x), np.exp(-x))
+    numerator = np.subtract(np.exp(z), np.exp(-z))
+    denominator = np.add(np.exp(z), np.exp(-z))
     return numerator / denominator
 
 
