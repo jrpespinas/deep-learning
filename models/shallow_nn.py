@@ -3,6 +3,10 @@
 import numpy as np
 
 
+def relu_prime(z):
+    return 1 if z >= 0 else 0
+
+
 def tanh_prime(z):
     return 1 - np.square(tanh(z))
 
