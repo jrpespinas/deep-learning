@@ -3,6 +3,10 @@
 import numpy as np
 
 
+def sigmoid_prime(z):
+    return sigmoid(z) * (1 - sigmoid(z))
+
+
 def relu(z):
     return np.maximum(0, z)
 
