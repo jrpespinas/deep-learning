@@ -31,7 +31,7 @@ def sigmoid(z):
     return numerator / denominator
 
 
-def layer_size(X, Y, hidden_layer: int = 5):
+def layer_size(X, Y, hidden_layer: int = 5) -> Tuple[int, int, int]:
     """
     Get the layer sizes
 
@@ -59,7 +59,8 @@ def layer_size(X, Y, hidden_layer: int = 5):
     return input_layer, hidden_layer, output_layer
 
 
-def initialize_parameters(input_layer, hidden_layer, output_layer, seed: int = 69, constant: float = 0.01):
+def initialize_parameters(input_layer, hidden_layer, output_layer,
+                          seed: int = 69, constant: float = 0.01) -> dict:
     """
     Initialize the parameters of all the layers
 
@@ -98,7 +99,7 @@ def initialize_parameters(input_layer, hidden_layer, output_layer, seed: int = 6
     return parameters
 
 
-def forward_propagation(X, parameters, activation):
+def forward_propagation(X, parameters, activation) -> Tuple[float, dict]:
     """
     Make predictions
 
@@ -138,7 +139,7 @@ def forward_propagation(X, parameters, activation):
     return A2, cache
 
 
-def cost_function(predictions, labels, parameters):
+def cost_function(predictions, labels, parameters) -> float:
     """
     Compute the cost function
 
