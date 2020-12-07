@@ -222,6 +222,29 @@ def update_parameters(parameters, gradients, learning_rate: float = 1.2) -> dict
     return parameters
 
 
+def model(X, labels, hidden_layer, num_iterations=10000, seed: int = 69) -> dict:
+    np.random.seed(seed)
+    input_layer, _, output_layer = layer_size(X, labels)
+
+    parameters = initialize_parameters(
+        input_layer, hidden_layer, output_layer, seed)
+
+    for i in range(0, num_iterations):
+        predictions, cache = forward_propagation(X, parameters)
+
+        cost = cost_function(predictions, labels, parameters)
+
+        gradients = backward_propagation(
+            predictions, labels, parameters, cache)
+
+        parameters = update_parameters(parameters, gradients)
+
+        if i % 1000 == 0:
+            print("Loss: {0:.7f}".format(cost))
+
+    return parameters
+
+
 def main():
     pass
 
