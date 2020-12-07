@@ -99,6 +99,25 @@ def initialize_parameters(input_layer, hidden_layer, output_layer, seed: int = 6
 
 
 def forward_propagation(X, parameters, activation):
+    """
+    Make predictions
+
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Data
+    parameters : dict
+        Weights and bias
+    activation : function
+        Activation function
+
+    Returns
+    -------
+    A2 : numpy.ndarray
+        Predictions
+    cache : dict
+        cache of the computations
+    """
     weights_1 = parameters["weights_1"]
     bias_1 = parameters["bias_1"]
     weights_2 = parameters["weights_2"]
