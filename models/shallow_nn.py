@@ -60,6 +60,27 @@ def layer_size(X, Y, hidden_layer: int = 5):
 
 
 def initialize_parameters(input_layer, hidden_layer, output_layer, seed: int = 69, constant: float = 0.01):
+    """
+    Initialize the parameters of all the layers
+
+    Parameters
+    ----------
+    input_layer : int 
+        Size of input layer
+    hidden_layer : int 
+        Number of Neurons within one hidden layer
+    output_layer : int
+        Size of output layer
+    seed : int
+        Seed number
+    constant : float
+        Constant to normalize weights
+
+    Returns
+    -------
+    parameters : dict
+        Dictionary of the initialized parameters
+    """
     np.random.seed(seed)
 
     weights_1 = np.random.randn(input_layer, hidden_layer) * constant
