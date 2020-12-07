@@ -8,7 +8,7 @@ def relu_prime(z):
 
 
 def tanh_prime(z):
-    return 1 - np.square(tanh(z))
+    return 1 - np.power(tanh(z), 2)
 
 
 def sigmoid_prime(z):
