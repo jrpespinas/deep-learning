@@ -100,7 +100,7 @@ def initialize_parameters(input_layer, hidden_layer, output_layer,
     return parameters
 
 
-def forward_propagation(X, parameters, activation) -> Tuple[float, dict]:
+def forward_propagation(X, parameters) -> Tuple[float, dict]:
     """
     Make predictions
 
@@ -126,7 +126,7 @@ def forward_propagation(X, parameters, activation) -> Tuple[float, dict]:
     bias_2 = parameters["bias_2"]
 
     Z1 = np.dot(weights_1, X) + bias_1
-    A1 = activation(Z1)
+    A1 = relu(Z1)
     Z2 = np.dot(weights_2, A1) + bias_2
     A2 = sigmoid(Z2)
 
