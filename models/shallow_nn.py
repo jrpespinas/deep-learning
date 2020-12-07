@@ -1,11 +1,14 @@
 """Shallow Neural Network in Numpy"""
 
 import numpy as np
+from sklearn.datasets import load_wine
 from typing import Tuple
 
 
 def relu_prime(z):
-    return 1 if z >= 0 else 0
+    z[z <= 0] = 0
+    z[z > 0] = 1
+    return z
 
 
 def tanh_prime(z):
@@ -32,7 +35,7 @@ def sigmoid(z):
     return numerator / denominator
 
 
-def layer_size(X, Y, hidden_layer: int = 5) -> Tuple[int, int, int]:
+def layer_size(X, labels, hidden_layer: int = 5) -> Tuple[int, int, int]:
     """
     Get the layer sizes
 
@@ -56,7 +59,7 @@ def layer_size(X, Y, hidden_layer: int = 5) -> Tuple[int, int, int]:
     """
     input_layer = X.shape[0]
     hidden_layer = hidden_layer
-    output_layer = Y.shape[0]
+    output_layer = labels.shape[0]
     return input_layer, hidden_layer, output_layer
 
 
@@ -85,7 +88,7 @@ def initialize_parameters(input_layer, hidden_layer, output_layer,
     """
     np.random.seed(seed)
 
-    weights_1 = np.random.randn(input_layer, hidden_layer) * constant
+    weights_1 = np.random.randn(hidden_layer, input_layer) * constant
     bias_1 = np.zeros((hidden_layer, 1))
     weights_2 = np.random.randn(output_layer, hidden_layer) * constant
     bias_2 = np.zeros((output_layer, 1))
@@ -126,7 +129,7 @@ def forward_propagation(X, parameters) -> Tuple[float, dict]:
     bias_2 = parameters["bias_2"]
 
     Z1 = np.dot(weights_1, X) + bias_1
-    A1 = relu(Z1)
+    A1 = tanh(Z1)
     Z2 = np.dot(weights_2, A1) + bias_2
     A2 = sigmoid(Z2)
 
@@ -181,7 +184,7 @@ def backward_propagation(X, labels, parameters, cache) -> dict:
     d_weights_2 = (1 / num_training_examples) * np.dot(d_output_layer, A1.T)
     d_bias_2 = (1 / num_training_examples) * \
         np.sum(d_output_layer, axis=1, keepdims=True)
-    d_hidden_layer = np.dot(weights_2.T, d_output_layer) * relu_prime(A1)
+    d_hidden_layer = np.dot(weights_2.T, d_output_layer) * tanh_prime(A1)
     d_weights_1 = (1 / num_training_examples) * np.dot(d_hidden_layer, X.T)
     d_bias_1 = (1 / num_training_examples) * \
         np.sum(d_hidden_layer, axis=1, keepdims=True)
@@ -246,7 +249,11 @@ def model(X, labels, hidden_layer, num_iterations=10000, seed: int = 69) -> dict
 
 
 def main():
-    pass
+    data = load_wine()
+    X = data.data
+    labels = data.target
+    labels = labels[:, np.newaxis]
+    model(X, labels, 4, seed=3)
 
 
 if __name__ == "__main__":
