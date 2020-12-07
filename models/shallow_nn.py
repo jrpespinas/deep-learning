@@ -138,6 +138,18 @@ def forward_propagation(X, parameters, activation):
     return A2, cache
 
 
+def cost_function(predictions, labels, parameters):
+    num_training_examples = labels.shape[1]
+
+    log_1 = np.multiply(labels, np.log(predictions))
+    log_0 = np.multiply((1 - labels), np.log(1 - predictions))
+    cost = (-1 / num_training_examples) * np.sum(log_1 + log_0)
+
+    cost = np.squeeze(cost)
+
+    return cost
+
+
 def main():
     pass
 
