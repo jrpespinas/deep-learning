@@ -31,6 +31,13 @@ def sigmoid(z):
     return numerator / denominator
 
 
+def layer_size(X, Y, hidden_layer: int = 5):
+    input_layer = X.shape[0]
+    hidden_layer = hidden_layer
+    output_layer = Y.shape[0]
+    return (input_layer, hidden_layer, output_layer)
+
+
 def main():
     pass
 
