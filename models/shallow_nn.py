@@ -1,6 +1,7 @@
 """Shallow Neural Network in Numpy"""
 
 import numpy as np
+from typing import Tuple
 
 
 def relu_prime(z):
