@@ -139,6 +139,23 @@ def forward_propagation(X, parameters, activation):
 
 
 def cost_function(predictions, labels, parameters):
+    """
+    Compute the cost function
+
+    Parameters
+    ----------
+    predictions : numpy.ndarray
+        Predicted output from `forward_propagation`
+    labels : numpy.ndarray
+        Ground truth of the predictions
+    parameters : dict
+        Weights
+
+    Returns
+    -------
+    cost : float
+        Loss or cost 
+    """
     num_training_examples = labels.shape[1]
 
     log_1 = np.multiply(labels, np.log(predictions))
