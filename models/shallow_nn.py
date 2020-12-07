@@ -98,6 +98,27 @@ def initialize_parameters(input_layer, hidden_layer, output_layer, seed: int = 6
     return parameters
 
 
+def forward_propagation(X, parameters, activation):
+    weights_1 = parameters["weights_1"]
+    bias_1 = parameters["bias_1"]
+    weights_2 = parameters["weights_2"]
+    bias_2 = parameters["bias_2"]
+
+    Z1 = np.dot(weights_1, X) + bias_1
+    A1 = activation(Z1)
+    Z2 = np.dot(weights_2, A1) + bias_2
+    A2 = sigmoid(Z2)
+
+    cache = {
+        "Z1": Z1,
+        "A1": A1,
+        "Z2": Z2,
+        "A2": A2
+    }
+
+    return A2, cache
+
+
 def main():
     pass
 
