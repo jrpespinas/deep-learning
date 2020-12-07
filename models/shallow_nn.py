@@ -193,7 +193,33 @@ def backward_propagation(X, labels, parameters, cache) -> dict:
         "d_bias_2": d_bias_2
     }
 
-    return grads
+    return gradients
+
+
+def update_parameters(parameters, gradients, learning_rate: float = 1.2) -> dict:
+    weights_1 = parameters['weights_1']
+    bias_1 = parameters['bias_1']
+    weights_2 = parameters['weights_2']
+    bias_2 = parameters['bias_2']
+
+    d_weights_1 = gradients['d_weights_1']
+    d_bias_1 = gradients['d_bias_1']
+    d_weights_2 = gradients['d_weights_2']
+    d_bias_2 = gradients['d_bias_2']
+
+    weights_1 = weights_1 - learning_rate * d_weights_1
+    bias_1 = bias_1 - learning_rate * d_bias_1
+    weights_2 = weights_2 - learning_rate * d_weights_2
+    bias_2 = bias_2 - learning_rate * d_bias_2
+
+    parameters = {
+        "weights_1": weights_1,
+        "bias_1": bias_1,
+        "weights_2": weights_2,
+        "bias_2": bias_2
+    }
+
+    return parameters
 
 
 def main():
