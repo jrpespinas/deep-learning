@@ -169,6 +169,33 @@ def cost_function(predictions, labels, parameters) -> float:
     return cost
 
 
+def backward_propagation(X, labels, parameters, cache) -> dict:
+    num_training_examples = X.shape[1]
+
+    weights_1 = parameters["weights_1"]
+    weights_2 = parameters["weights_2"]
+    A1 = cache['A1']
+    A2 = cache['A2']
+
+    d_output_layer = A2 - labels
+    d_weights_2 = (1 / num_training_examples) * np.dot(d_output_layer, A1.T)
+    d_bias_2 = (1 / num_training_examples) * \
+        np.sum(d_output_layer, axis=1, keepdims=True)
+    d_hidden_layer = np.dot(weights_2.T, d_output_layer) * relu_prime(A1)
+    d_weights_1 = (1 / num_training_examples) * np.dot(d_hidden_layer, X.T)
+    d_bias_1 = (1 / num_training_examples) * \
+        np.sum(d_hidden_layer, axis=1, keepdims=True)
+
+    grads = {
+        "d_weights_1": d_weights_1,
+        "d_bias_1": d_bias_1,
+        "d_weights_2": d_weights_2,
+        "d_bias_2": d_bias_2
+    }
+
+    return grads
+
+
 def main():
     pass
 
