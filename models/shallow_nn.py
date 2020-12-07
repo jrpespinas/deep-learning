@@ -186,7 +186,7 @@ def backward_propagation(X, labels, parameters, cache) -> dict:
     d_bias_1 = (1 / num_training_examples) * \
         np.sum(d_hidden_layer, axis=1, keepdims=True)
 
-    grads = {
+    gradients = {
         "d_weights_1": d_weights_1,
         "d_bias_1": d_bias_1,
         "d_weights_2": d_weights_2,
