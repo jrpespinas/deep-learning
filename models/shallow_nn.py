@@ -32,10 +32,31 @@ def sigmoid(z):
 
 
 def layer_size(X, Y, hidden_layer: int = 5):
+    """
+    Get the layer sizes
+
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Features
+    Y : numpy.ndarray
+        Labels
+    hidden_layer : int
+        Number of Neurons
+
+    Returns
+    -------
+    input_layer : int 
+        Size of input layer
+    hidden_layer : int 
+        Number of Neurons within one hidden layer
+    output_layer : int
+        Size of output layer
+    """
     input_layer = X.shape[0]
     hidden_layer = hidden_layer
     output_layer = Y.shape[0]
-    return (input_layer, hidden_layer, output_layer)
+    return input_layer, hidden_layer, output_layer
 
 
 def main():
