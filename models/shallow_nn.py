@@ -173,6 +173,25 @@ def cost_function(predictions, labels, parameters) -> float:
 
 
 def backward_propagation(X, labels, parameters, cache) -> dict:
+    """
+    Backward propagation of the model
+
+    Parameters
+    ----------
+    X : numpy.ndarray
+        The data
+    labels : numpy.ndarray
+        Ground truth of the predictions
+    parameters : dict
+        Weights 
+    cache : dict
+        Cache of the computation 
+
+    Returns
+    -------
+    gradients : dict
+        Derivatives of the weights
+    """
     num_training_examples = X.shape[1]
 
     weights_1 = parameters["weights_1"]
@@ -200,6 +219,23 @@ def backward_propagation(X, labels, parameters, cache) -> dict:
 
 
 def update_parameters(parameters, gradients, learning_rate: float = 1.2) -> dict:
+    """
+    Adjust the parameters during backpropagation
+
+    Parameters
+    ----------
+    parameters : dict
+        Weights
+    gradients : dict
+        Derivative of the weights
+    learning_rate : float
+        Constant responsible for training step size
+    
+    Returns
+    -------
+    parameters : dict
+        Weights
+    """
     weights_1 = parameters['weights_1']
     bias_1 = parameters['bias_1']
     weights_2 = parameters['weights_2']
@@ -226,6 +262,27 @@ def update_parameters(parameters, gradients, learning_rate: float = 1.2) -> dict
 
 
 def model(X, labels, hidden_layer, num_iterations=10000, seed: int = 69) -> dict:
+    """
+    Training of the model
+
+    Parameters
+    ----------
+    X : numpy.ndarray
+        Dataset
+    labels : numpy.ndarray
+        Ground Truth
+    hidden_layer : int
+        Number of neurons in a hidden layer
+    num_iterations : int
+        Number of epochs
+    seed : int
+        Seed number
+
+    Returns
+    -------
+    parameters : dict
+        Weights of the most recent epoch
+    """
     np.random.seed(seed)
     input_layer, _, output_layer = layer_size(X, labels)
 
@@ -249,11 +306,7 @@ def model(X, labels, hidden_layer, num_iterations=10000, seed: int = 69) -> dict
 
 
 def main():
-    data = load_wine()
-    X = data.data
-    labels = data.target
-    labels = labels[:, np.newaxis]
-    model(X, labels, 4, seed=3)
+    pass
 
 
 if __name__ == "__main__":
