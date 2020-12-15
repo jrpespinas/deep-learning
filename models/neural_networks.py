@@ -1,9 +1,15 @@
-"""Neural Networks"""
+"""Neural Networks in Numpy"""
 
 class NeuralNetwork:
     def __init__(self):
         pass
     
+    def initialize_parameters(self):
+        pass
+
+    def update_parameters(self):
+        pass
+
 def main():
     pass
 
