@@ -22,6 +22,9 @@ class NeuralNetwork:
         z[z <= 0] = 0
         z[z > 0] = 1
         return z
+    
+    def sigmoid_prime(self, z):
+        return self.sigmoid(z) * (1 - self.sigmoid(z))
 
 def main():
     pass
