@@ -1,6 +1,7 @@
 """Neural Networks in Numpy"""
 
 import numpy as np
+
 class NeuralNetwork:
     def __init__(self):
         pass
@@ -16,7 +17,12 @@ class NeuralNetwork:
 
     def sigmoid(self, z):
         return 1 / np.add(1, np.exp(-z))
-        
+
+    def relu_prime(self, z):
+        z[z <= 0] = 0
+        z[z > 0] = 1
+        return z
+
 def main():
     pass
 
