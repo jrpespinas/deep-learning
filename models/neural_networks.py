@@ -14,7 +14,9 @@ class NeuralNetwork:
     def relu(self, z):
         return np.maximum(0, z)
 
-
+    def sigmoid(self, z):
+        return 1 / np.add(1, np.exp(-z))
+        
 def main():
     pass
 
