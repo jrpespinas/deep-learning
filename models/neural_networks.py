@@ -28,7 +28,7 @@ class NeuralNetwork:
 
         return [weights, bias]
 
-    def add(self, parameters, activation: str):
+    def add(self, parameters, activation="relu"):
         assert (activation == "relu") or (activation == 'sigmoid'), \
             "ERROR: Activation not supported"
 
@@ -38,6 +38,18 @@ class NeuralNetwork:
             "b" + str(layer_num): parameters[1],
             "activation" + str(layer_num): activation
         })
+
+    def forward_step(self, A, X, b, activation):
+        Z = np.dot(W, A) + b
+
+        if activation == "relu":
+            g = relu
+        elif activation == "sigmoid":
+            g = sigmoid
+
+        A = g(Z)
+
+        return A, Z
 
 
 def main():
