@@ -28,6 +28,13 @@ class NeuralNetwork:
 
         return [weights, bias]
 
+    def add(self, parameters):
+        layer_num = len(self.architecture) + 1
+        self.architecture.append({
+            "W" + str(layer_num): parameters[0],
+            "b" + str(layer_num): parameters[1]
+        })
+
 
 def main():
     model = NeuralNetwork()
