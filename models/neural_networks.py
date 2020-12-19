@@ -28,17 +28,21 @@ class NeuralNetwork:
 
         return [weights, bias]
 
-    def add(self, parameters):
+    def add(self, parameters, activation: str):
+        assert (activation == "relu") or (activation == 'sigmoid'), \
+            "ERROR: Activation not supported"
+
         layer_num = len(self.architecture) + 1
         self.architecture.append({
             "W" + str(layer_num): parameters[0],
-            "b" + str(layer_num): parameters[1]
+            "b" + str(layer_num): parameters[1],
+            "activation" + str(layer_num): activation
         })
 
 
 def main():
     model = NeuralNetwork()
-    model.add(NeuralNetwork.layer(15, 15))
+    model.add(NeuralNetwork.layer(15, 15), "relu")
 
 
 if __name__ == "__main__":
