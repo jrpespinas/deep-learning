@@ -50,6 +50,17 @@ class NeuralNetwork:
         return parameters
 
     def add(self, parameters, activation="relu"):
+        """
+        Add the weights `layer()` to the architecture `self.architecture`
+
+        Parameters
+        ----------
+        parameters : numpy.ndarray
+            Weights and bias
+        activation : str
+            Activation function 
+
+        """
         assert (activation == "relu") or (activation == 'sigmoid'), \
             "ERROR: Activation not supported"
 
