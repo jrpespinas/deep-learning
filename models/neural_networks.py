@@ -25,6 +25,23 @@ class NeuralNetwork:
 
     @staticmethod
     def layer(output_dims, input_dims, constant: float = 0.01):
+        """
+        Initialize a hidden layer with the size (`output_dims`, `input_dims`)
+
+        Parameters
+        ----------
+        output_dims : int
+            Number of hidden units at the current layer
+        input_dims : int
+            Number of hidden units at the previous layer
+        constant : float
+            Number to scale down weights
+
+        Returns
+        -------
+        parameters : list
+            List containing the intialized weights and bias
+        """
         weights = np.random.randn(output_dims, input_dims) * constant
         bias = np.zeros((output_dims, 1))
 
