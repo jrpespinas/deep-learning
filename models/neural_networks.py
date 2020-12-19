@@ -6,6 +6,7 @@ import numpy as np
 class NeuralNetwork:
     def __init__(self):
         self.architecture = []
+        self.cache = []
 
     def relu(self, z):
         return np.maximum(0, z)
@@ -26,7 +27,9 @@ class NeuralNetwork:
         weights = np.random.randn(output_dims, input_dims) * constant
         bias = np.zeros((output_dims, 1))
 
-        return [weights, bias]
+        parameters = [weights, bias]
+
+        return parameters
 
     def add(self, parameters, activation="relu"):
         assert (activation == "relu") or (activation == 'sigmoid'), \
@@ -39,7 +42,7 @@ class NeuralNetwork:
             "activation" + str(layer_num): activation
         })
 
-    def forward_step(self, A, W, b, activation):
+    def __forward_step(self, W, A, b, activation):
         Z = np.dot(W, A) + b
 
         if activation == "relu":
@@ -54,7 +57,7 @@ class NeuralNetwork:
 
 def main():
     model = NeuralNetwork()
-    model.add(NeuralNetwork.layer(15, 15), "relu")
+    model.add(NeuralNetwork.layer(5, 21), activation="relu")
 
 
 if __name__ == "__main__":
