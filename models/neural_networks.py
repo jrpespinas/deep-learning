@@ -4,7 +4,8 @@ import numpy as np
 
 
 class NeuralNetwork:
-    def __init__(self):
+    def __init__(self, seed):
+        np.random.seed(seed)
         self.architecture = []
         self.cache = []
 
@@ -35,12 +36,26 @@ class NeuralNetwork:
         assert (activation == "relu") or (activation == 'sigmoid'), \
             "ERROR: Activation not supported"
 
+        current_weights = parameters[0]
+        current_bias = parameters[1]
+
         layer_num = len(self.architecture) + 1
         self.architecture.append({
-            "W" + str(layer_num): parameters[0],
-            "b" + str(layer_num): parameters[1],
+            "W" + str(layer_num): current_weights,
+            "b" + str(layer_num): current_bias,
             "activation" + str(layer_num): activation
         })
+
+        if layer_num >= 2:
+            previous_weights = self.architecture[-2]["W" + str(layer_num - 1)]
+            self.__check_dimensions(
+                current_weights, previous_weights, layer_num)
+
+    def __check_dimensions(self, current_layer, previous_layer, layer_num):
+        assert current_layer.shape[1] == previous_layer.shape[0], \
+            "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
+                layer_num, layer_num-1
+        )
 
     def __forward_step(self, W, A, b, activation):
         Z = np.dot(W, A) + b
@@ -56,8 +71,10 @@ class NeuralNetwork:
 
 
 def main():
-    model = NeuralNetwork()
+    model = NeuralNetwork(7)
     model.add(NeuralNetwork.layer(5, 21), activation="relu")
+    model.add(NeuralNetwork.layer(3, 5), activation="relu")
+    model.add(NeuralNetwork.layer(3, 3), activation="relu")
 
 
 if __name__ == "__main__":
