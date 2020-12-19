@@ -39,13 +39,13 @@ class NeuralNetwork:
             "activation" + str(layer_num): activation
         })
 
-    def forward_step(self, A, X, b, activation):
+    def forward_step(self, A, W, b, activation):
         Z = np.dot(W, A) + b
 
         if activation == "relu":
-            g = relu
+            g = self.relu
         elif activation == "sigmoid":
-            g = sigmoid
+            g = self.sigmoid
 
         A = g(Z)
 
