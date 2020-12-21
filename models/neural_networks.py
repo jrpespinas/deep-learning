@@ -113,6 +113,17 @@ class NeuralNetwork:
 
         return A_current
 
+    def cost_function(self, y, y_hat):
+        m = y.shape[1]
+
+        loss = np.multiply(y, np.log(y_hat)) + \
+            np.multiply((1 - y), np.log(1 - y_hat))
+        total_loss = (-1 / m) * np.sum(loss)
+
+        total_loss = np.squeeze(total_loss)
+
+        return total_loss
+
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
             "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
@@ -137,7 +148,6 @@ def main():
     model.add(NeuralNetwork.layer(5, 21), activation="relu")
     model.add(NeuralNetwork.layer(3, 5), activation="relu")
     model.add(NeuralNetwork.layer(3, 3), activation="relu")
-    model.forward_propagation()
 
 
 if __name__ == "__main__":
