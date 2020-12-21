@@ -80,6 +80,19 @@ class NeuralNetwork:
                 current_weights, previous_weights, layer_num)
 
     def forward_propagation(self, X):
+        """
+        Predict the values for `X`
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            The data or features
+
+        Returns
+        -------
+        A_current : numpy.ndarray
+            The prediction
+        """
         A_current = X
 
         for layer_num, layer in enumerate(self.architecture):
