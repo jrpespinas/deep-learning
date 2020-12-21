@@ -79,6 +79,27 @@ class NeuralNetwork:
             self._check_dimensions(
                 current_weights, previous_weights, layer_num)
 
+    def forward_propagation(self, X):
+        A_current = X
+
+        for layer_num, layer in enumerate(self.architecture):
+            layer_num += 1
+
+            A_previous = A_current
+            weights = layer["W" + str(layer_num)]
+            bias = layer["b" + str(layer_num)]
+            activation = layer["activation"]
+
+            A_current, Z_current = self._forward_step(weights, A_previous,
+                                                      bias, activation)
+
+            self.cache.append({
+                "A" + str(layer_num): A_current,
+                "Z" + str(layer_num): Z_current
+            })
+
+        return A_current
+
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
             "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
@@ -103,6 +124,7 @@ def main():
     model.add(NeuralNetwork.layer(5, 21), activation="relu")
     model.add(NeuralNetwork.layer(3, 5), activation="relu")
     model.add(NeuralNetwork.layer(3, 3), activation="relu")
+    model.forward_propagation()
 
 
 if __name__ == "__main__":
