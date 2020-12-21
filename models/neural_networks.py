@@ -113,7 +113,22 @@ class NeuralNetwork:
 
         return A_current
 
-    def cost_function(self, y, y_hat):
+    def cost_function(self, y, y_hat) -> float:
+        """
+        Compute the loss of the model
+
+        Parameters
+        ----------
+        y : numpy.ndarray
+            The true labels or ground truth
+        y_hat : numpy.ndarray
+            Predictions of the model
+
+        Retruns
+        -------
+        total_loss : float
+            The loss of the model 
+        """
         m = y.shape[1]
 
         loss = np.multiply(y, np.log(y_hat)) + \
