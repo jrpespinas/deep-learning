@@ -76,16 +76,16 @@ class NeuralNetwork:
 
         if layer_num >= 2:
             previous_weights = self.architecture[-2]["W" + str(layer_num - 1)]
-            self.__check_dimensions(
+            self._check_dimensions(
                 current_weights, previous_weights, layer_num)
 
-    def __check_dimensions(self, current_layer, previous_layer, layer_num):
+    def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
             "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
                 layer_num, layer_num-1
         )
 
-    def __forward_step(self, W, A, b, activation):
+    def _forward_step(self, W, A, b, activation):
         Z = np.dot(W, A) + b
 
         if activation == "relu":
