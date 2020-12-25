@@ -1,9 +1,27 @@
-"""Neural Networks in Numpy"""
+"""Neural Network in Numpy"""
 
 import numpy as np
 
 
 class NeuralNetwork:
+    """Neural Network class implemented in Numpy.
+
+    The Neural Network class implemented in Numpy 
+    is loosely inspired by TensorFlow and PyTorch 
+    implementation.
+
+    Note:
+        More methods and functionality will be included in future works.
+    
+    Args:
+        seed (int): initialize pseudo-random number generation
+
+    Attributes:
+        architecture (:obj:`list` of :obj:`dict`): The structure 
+            of the Neural Network.
+        cache (:obj:`list` of :obj:`float`): Temporary storage of computations
+            for backward propagation.
+    """
     def __init__(self, seed):
         np.random.seed(seed)
         self.architecture = []
