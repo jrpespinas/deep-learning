@@ -157,6 +157,15 @@ class NeuralNetwork:
 
         return A, Z
 
+    def backward_propagation(self):
+        raise NotImplementedError
+
+    def _backward_step(self):
+        raise NotImplementedError
+
+    def _update_parameters(self):
+        raise NotImplementedError
+
 
 def main():
     model = NeuralNetwork(7)
