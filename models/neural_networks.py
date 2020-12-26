@@ -110,7 +110,7 @@ class NeuralNetwork:
             A_previous = A_current
             weights = layer["W" + str(layer_num)]
             bias = layer["b" + str(layer_num)]
-            activation = layer["activation"]
+            activation = layer["activation" + str(layer_num)]
 
             A_current, Z_current = self._forward_step(weights, A_previous,
                                                       bias, activation)
@@ -177,10 +177,12 @@ class NeuralNetwork:
 
 
 def main():
+    X = np.random.randn(3, 1)
     model = NeuralNetwork(7)
-    model.add(NeuralNetwork.layer(5, 21), activation="relu")
+    model.add(NeuralNetwork.layer(5, 3), activation="relu")
     model.add(NeuralNetwork.layer(3, 5), activation="relu")
     model.add(NeuralNetwork.layer(3, 3), activation="relu")
+    model.forward_propagation(X)
 
 
 if __name__ == "__main__":
