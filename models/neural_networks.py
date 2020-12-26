@@ -67,7 +67,7 @@ class NeuralNetwork:
 
         Note: 
             Change the activation function at the output layer.
-            
+
         Args:
             parameters (numpy.ndarray): Weights and bias.
             activation (:obj:`str`, optional): Activation function.
@@ -127,19 +127,14 @@ class NeuralNetwork:
 
     def cost_function(self, y, y_hat) -> float:
         """
-        Compute the loss of the model
+        Compute the loss of the model.
 
-        Parameters
-        ----------
-        y : numpy.ndarray
-            The true labels or ground truth
-        y_hat : numpy.ndarray
-            Predictions of the model
+        Args:
+            y (numpy.ndarray): The true labels or ground truth.
+            y_hat (numpy.ndarray): Predictions of the model.
 
-        Retruns
-        -------
-        total_loss : float
-            The loss of the model 
+        Retrun:
+            total_loss (float): The loss of the model.
         """
         m = y.shape[1]
 
