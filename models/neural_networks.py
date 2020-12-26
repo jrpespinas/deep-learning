@@ -65,9 +65,12 @@ class NeuralNetwork:
         """
         Add the weights the initialized layers to the architecture.
 
+        Note: 
+            Change the activation function at the output layer.
+            
         Args:
             parameters (numpy.ndarray): Weights and bias.
-            activation (str): Activation function.
+            activation (:obj:`str`, optional): Activation function.
 
         Example:
             >>> model = NeuralNetwork()
