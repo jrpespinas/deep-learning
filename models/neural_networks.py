@@ -14,7 +14,7 @@ class NeuralNetwork:
         More methods and functionality will be included in future works.
     
     Args:
-        seed (int): initialize pseudo-random number generation
+        seed (int): initialize pseudo-random number generation.
 
     Attributes:
         architecture (:obj:`list` of :obj:`dict`): The structure 
@@ -46,9 +46,9 @@ class NeuralNetwork:
         """Initialize random weights of a single hidden layer.
 
         Args:
-            output_dims (int): Number of hidden units at the current layer
-            input_dims (int): Number of hidden units at the previous layer
-            constant (:obj:`float`, optional): Number to scale down weights
+            output_dims (int): Number of hidden units at the current layer.
+            input_dims (int): Number of hidden units at the previous layer.
+            constant (:obj:`float`, optional): Number to scale down weights.
 
         Returns:
             parameters (:obj:`list` of :obj:`numpy.ndarray`): List containing 
@@ -63,15 +63,16 @@ class NeuralNetwork:
 
     def add(self, parameters, activation="relu"):
         """
-        Add the weights `layer()` to the architecture `self.architecture`
+        Add the weights the initialized layers to the architecture.
 
-        Parameters
-        ----------
-        parameters : numpy.ndarray
-            Weights and bias
-        activation : str
-            Activation function 
+        Args:
+            parameters (numpy.ndarray): Weights and bias.
+            activation (str): Activation function.
 
+        Example:
+            >>> model = NeuralNetwork()
+            >>> model.add(NeuralNetwork.layer(5, 21), activation="relu")
+            >>> model.add(NeuralNetwork.layer(1, 5), activation="sigmoid")
         """
         assert (activation == "relu") or (activation == 'sigmoid'), \
             "ERROR: Activation not supported"
