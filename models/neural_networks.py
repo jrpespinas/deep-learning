@@ -43,7 +43,7 @@ class NeuralNetwork:
 
     @staticmethod
     def layer(output_dims, input_dims, constant: float = 0.01):
-        """Initialize random weights of a single hidden layer.
+        """Initializes random weights of a single hidden layer.
 
         Args:
             output_dims (int): Number of hidden units at the current layer.
@@ -63,7 +63,7 @@ class NeuralNetwork:
 
     def add(self, parameters, activation="relu"):
         """
-        Add the weights the initialized layers to the architecture.
+        Adds the weights the initialized layers to the architecture.
 
         Note: 
             Change the activation function at the output layer.
@@ -97,7 +97,7 @@ class NeuralNetwork:
 
     def forward_propagation(self, X):
         """
-        Predict the values for X.
+        Predicts the values for X.
 
         Args:
             X (numpy.ndarray): The input features or dataset.
@@ -127,13 +127,13 @@ class NeuralNetwork:
 
     def cost_function(self, y, y_hat) -> float:
         """
-        Compute the loss of the model.
+        Computes the loss of the model.
 
         Args:
             y (numpy.ndarray): The true labels or ground truth.
             y_hat (numpy.ndarray): Predictions of the model.
 
-        Retrun:
+        Retruns:
             total_loss (float): The loss of the model.
         """
         m = y.shape[1]
