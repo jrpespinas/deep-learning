@@ -94,17 +94,13 @@ class NeuralNetwork:
 
     def forward_propagation(self, X):
         """
-        Predict the values for `X`
+        Predict the values for X.
 
-        Parameters
-        ----------
-        X : numpy.ndarray
-            The data or features
+        Args:
+            X (numpy.ndarray): The input features or dataset.
 
-        Returns
-        -------
-        A_current : numpy.ndarray
-            The prediction
+        Returns:
+            A_current (numpy.ndarray): The predicted value.
         """
         A_current = X
 
