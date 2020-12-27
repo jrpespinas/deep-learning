@@ -155,7 +155,6 @@ class NeuralNetwork(Activation):
         return total_loss
 
     def backward_propagation(self, y, y_hat, learning_rate):
-        #A_current = dA
         m = y.shape[1]
 
         dA_previous = - (np.divide(y, y_hat) + np.divide(1 - y, 1 - y_hat))
@@ -177,8 +176,20 @@ class NeuralNetwork(Activation):
 
             self.architecture[layer_num - 1]["W" + str(layer_num)] = updated_weights
             self.architecture[layer_num - 1]["b" + str(layer_num)] = updated_bias
+        
 
-            
+    def train(self, X, y, epochs, learning_rate, verbosity: bool = True):
+        loss_history = []
+
+        for i in range(epochs):
+            predictions = forward_propagation(X)
+            loss = cost_function(y, predictions)
+            loss_history.append(loss)
+            backward_propagation(y, predictions, learning_rate)
+
+            if verbosity:
+                print("Loss: {:.5f}".format(loss))
+
 
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
