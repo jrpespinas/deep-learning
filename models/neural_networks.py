@@ -148,7 +148,7 @@ class NeuralNetwork(Activation):
 
     def backward_propagation(self):
         raise NotImplementedError
-    
+
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
             "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
@@ -177,6 +177,8 @@ class NeuralNetwork(Activation):
         dW = (1 / m) * np.dot(dZ, A_previous)
         db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
         dA_previous = np.dot(W.T, dZ)
+
+        return dA_previous, dW, db
 
     def _update_parameters(self, dW, db):
         raise NotImplementedError
