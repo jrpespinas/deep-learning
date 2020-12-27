@@ -2,8 +2,22 @@
 
 import numpy as np
 
+class Activation:
+    def relu(self, z):
+        return np.maximum(0, z)
 
-class NeuralNetwork:
+    def sigmoid(self, z):
+        return 1 / np.add(1, np.exp(-z))
+
+    def relu_prime(self, z):
+        z[z <= 0] = 0
+        z[z > 0] = 1
+        return z
+
+    def sigmoid_prime(self, z):
+        return self.sigmoid(z) * (1 - self.sigmoid(z))
+
+class NeuralNetwork(Activation):
     """Neural Network class implemented in Numpy.
 
     The Neural Network class implemented in Numpy 
@@ -26,20 +40,6 @@ class NeuralNetwork:
         np.random.seed(seed)
         self.architecture = []
         self.cache = []
-
-    def relu(self, z):
-        return np.maximum(0, z)
-
-    def sigmoid(self, z):
-        return 1 / np.add(1, np.exp(-z))
-
-    def relu_prime(self, z):
-        z[z <= 0] = 0
-        z[z > 0] = 1
-        return z
-
-    def sigmoid_prime(self, z):
-        return self.sigmoid(z) * (1 - self.sigmoid(z))
 
     @staticmethod
     def layer(output_dims, input_dims, constant: float = 0.01):
