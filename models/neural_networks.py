@@ -3,6 +3,12 @@
 import numpy as np
 
 class Activation:
+    def __init__(self):
+        self.activation_funcitons = [
+            "sigmod",
+            "relu"
+        ]
+
     def relu(self, z):
         return np.maximum(0, z)
 
@@ -77,7 +83,7 @@ class NeuralNetwork(Activation):
             >>> model.add(NeuralNetwork.layer(5, 21), activation="relu")
             >>> model.add(NeuralNetwork.layer(1, 5), activation="sigmoid")
         """
-        assert (activation == "relu") or (activation == 'sigmoid'), \
+        assert activation in self.activation_funcitons, \
             "ERROR: Activation not supported"
 
         current_weights = parameters[0]
