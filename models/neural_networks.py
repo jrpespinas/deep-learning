@@ -154,7 +154,15 @@ class NeuralNetwork(Activation):
 
         return total_loss
 
-    def backward_propagation(self, y, y_hat, learning_rate):
+    def backward_propagation(self, y, y_hat, learning_rate: float = 0.01):
+        """Computes the gradients with respect to the loss value.
+
+        Args:
+            y (numpy.ndarray): The true labels or ground truth.
+            y_hat (numpy.ndarray): Predictions of the model.
+            learning_rate (:obj:`float`, optional): step size
+                for updating the weight and bias.
+        """
         m = y.shape[1]
 
         dA_previous = - (np.divide(y, y_hat) + np.divide(1 - y, 1 - y_hat))
@@ -178,7 +186,18 @@ class NeuralNetwork(Activation):
             self.architecture[layer_num - 1]["b" + str(layer_num)] = updated_bias
         
 
-    def train(self, X, y, epochs, learning_rate, verbosity: bool = True):
+    def train(self, X, y, epochs: int, learning_rate: float = 0.01, 
+              verbosity: bool = True):
+        """Gradient Descent
+
+        Args:
+            X (numpy.ndarray): The input features or dataset.
+            y (numpy.ndarray): The true labels or ground truth.
+            epochs (int): number of training iterations 
+                or number of steps of gradient descent.
+            learning_rate (float): step size for updating the weight and bias.
+            verbosity (True): Displays loss during training.
+        """
         loss_history = []
 
         for i in range(epochs):
