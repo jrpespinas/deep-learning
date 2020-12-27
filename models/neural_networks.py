@@ -140,7 +140,7 @@ class NeuralNetwork(Activation):
 
         loss = np.multiply(y, np.log(y_hat)) + \
             np.multiply((1 - y), np.log(1 - y_hat))
-        total_loss = (-1 / m) * np.sum(loss)
+        total_loss = np.multiply((-1 / m), np.sum(loss))
 
         total_loss = np.squeeze(total_loss)
 
@@ -174,8 +174,8 @@ class NeuralNetwork(Activation):
             g_prime = self.sigmoid_prime
         
         dZ = np.multiply(dA, g_prime(Z))
-        dW = (1 / m) * np.dot(dZ, A_previous)
-        db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+        dW = np.multiply((1 / m), np.dot(dZ, A_previous.T))
+        db = np.multiply((1 / m), np.sum(dZ, axis=1, keepdims=True))
         dA_previous = np.dot(W.T, dZ)
 
         return dA_previous, dW, db
