@@ -114,6 +114,7 @@ class NeuralNetwork(Activation):
             weights = layer["W" + str(layer_num)]
             bias = layer["b" + str(layer_num)]
             activation = layer["activation" + str(layer_num)]
+            print(weights)
 
             A_current, Z_current = self._forward_step(weights, A_previous,
                                                       bias, activation)
@@ -140,13 +141,13 @@ class NeuralNetwork(Activation):
 
         loss = np.multiply(y, np.log(y_hat)) + \
             np.multiply((1 - y), np.log(1 - y_hat))
-        total_loss = np.multiply((-1 / m), np.sum(loss))
+        total_loss = np.sum(loss) / m
 
         total_loss = np.squeeze(total_loss)
 
         return total_loss
 
-    def backward_propagation(self):
+    def backward_propagation(self, dA):
         raise NotImplementedError
 
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
@@ -174,8 +175,8 @@ class NeuralNetwork(Activation):
             g_prime = self.sigmoid_prime
         
         dZ = np.multiply(dA, g_prime(Z))
-        dW = np.multiply((1 / m), np.dot(dZ, A_previous.T))
-        db = np.multiply((1 / m), np.sum(dZ, axis=1, keepdims=True))
+        dW = np.dot(dZ, A_previous.T) / m
+        db = np.sum(dZ, axis=1, keepdims=True) / m
         dA_previous = np.dot(W.T, dZ)
 
         return dA_previous, dW, db
