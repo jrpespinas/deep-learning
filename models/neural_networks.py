@@ -4,8 +4,8 @@ import numpy as np
 
 class Activation:
     def __init__(self):
-        self.activation_funcitons = [
-            "sigmod",
+        self.activation_functions = [
+            "sigmoid",
             "relu"
         ]
 
@@ -43,6 +43,7 @@ class NeuralNetwork(Activation):
             for backward propagation.
     """
     def __init__(self, seed):
+        super().__init__()
         np.random.seed(seed)
         self.architecture = []
         self.cache = []
@@ -83,7 +84,7 @@ class NeuralNetwork(Activation):
             >>> model.add(NeuralNetwork.layer(5, 21), activation="relu")
             >>> model.add(NeuralNetwork.layer(1, 5), activation="sigmoid")
         """
-        assert activation in self.activation_funcitons, \
+        assert activation in self.activation_functions, \
             "ERROR: Activation not supported"
 
         current_weights = parameters[0]
@@ -153,8 +154,31 @@ class NeuralNetwork(Activation):
 
         return total_loss
 
-    def backward_propagation(self, dA):
-        raise NotImplementedError
+    def backward_propagation(self, y, y_hat, learning_rate):
+        #A_current = dA
+        m = y.shape[1]
+
+        dA_previous = - (np.divide(y, y_hat) + np.divide(1 - y, 1 - y_hat))
+        for layer_num, layer in reversed(list(enumerate(self.architecture))):
+            layer_num += 1
+            
+            dA_current = dA_previous
+            Z = self.cache["Z" + str(layer_num)]
+            A_previous = self.cache["A" + str(layer_num-1)]
+            activation = layer["activation" + str(layer_num)]
+            weights = layer["W" + str(layer_num)]
+            bias = layer["b" + str(layer_num)]
+            
+            dA_previous, dW, db = self._backward_step(A_previous, dA_current, 
+                m, weights, Z, activation)
+            
+            updated_weights, updated_bias = self._update_parameters(dW, db, 
+                weights, bias, learning_rate)
+
+            self.architecture[layer_num - 1]["W" + str(layer_num)] = updated_weights
+            self.architecture[layer_num - 1]["b" + str(layer_num)] = updated_bias
+
+            
 
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
@@ -163,13 +187,12 @@ class NeuralNetwork(Activation):
         )
 
     def _forward_step(self, W, A, b, activation):
-        Z = np.dot(W, A) + b
-
         if activation == "relu":
             g = self.relu
         elif activation == "sigmoid":
             g = self.sigmoid
 
+        Z = np.dot(W, A) + b
         A = g(Z)
 
         return A, Z
@@ -182,13 +205,15 @@ class NeuralNetwork(Activation):
         
         dZ = np.multiply(dA, g_prime(Z))
         dW = np.dot(dZ, A_previous.T) / m
-        db = np.sum(dZ, axis=1, keepdims=True) / m
+        db = np.sum(dZ, axis=1, keepdims=True) / m 
         dA_previous = np.dot(W.T, dZ)
 
         return dA_previous, dW, db
 
-    def _update_parameters(self, dW, db):
-        raise NotImplementedError
+    def _update_parameters(self, dW, db, W, b, learning_rate):
+        W -= learning_rate * dW
+        b -= learning_rate * db
+        return W, b
 
 
 def main():
@@ -197,7 +222,6 @@ def main():
     model.add(NeuralNetwork.layer(5, 3), activation="relu")
     model.add(NeuralNetwork.layer(3, 5), activation="relu")
     model.add(NeuralNetwork.layer(1, 3), activation="sigmoid")
-    model.forward_propagation(X)
 
 
 if __name__ == "__main__":
