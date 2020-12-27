@@ -201,10 +201,10 @@ class NeuralNetwork(Activation):
         loss_history = []
 
         for i in range(epochs):
-            predictions = forward_propagation(X)
-            loss = cost_function(y, predictions)
+            predictions = self.forward_propagation(X)
+            loss = self.cost_function(y, predictions)
             loss_history.append(loss)
-            backward_propagation(y, predictions, learning_rate)
+            self.backward_propagation(y, predictions, learning_rate)
 
             if verbosity:
                 print("Loss: {:.5f}".format(loss))
