@@ -247,12 +247,7 @@ class NeuralNetwork(Activation):
 
 
 def main():
-    X = np.random.randn(3, 1)
-    model = NeuralNetwork(7)
-    model.add(NeuralNetwork.layer(5, 3), activation="relu")
-    model.add(NeuralNetwork.layer(3, 5), activation="relu")
-    model.add(NeuralNetwork.layer(1, 3), activation="sigmoid")
-
+   print("Hello, this is the Neural Network class script.") 
 
 if __name__ == "__main__":
     main()
