@@ -146,6 +146,9 @@ class NeuralNetwork(Activation):
 
         return total_loss
 
+    def backward_propagation(self):
+        raise NotImplementedError
+    
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
             "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
@@ -164,13 +167,18 @@ class NeuralNetwork(Activation):
 
         return A, Z
 
-    def backward_propagation(self):
-        raise NotImplementedError
+    def _backward_step(self, A_previous, dA, m, W, Z, activation):
+        if activation == "relu":
+            g_prime = self.relu_prime
+        elif activation == "sigmoid":
+            g_prime = self.sigmoid_prime
+        
+        dZ = np.multiply(dA, g_prime(Z))
+        dW = (1 / m) * np.dot(dZ, A_previous)
+        db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
+        dA_previous = np.dot(W.T, dZ)
 
-    def _backward_step(self):
-        raise NotImplementedError
-
-    def _update_parameters(self):
+    def _update_parameters(self, dW, db):
         raise NotImplementedError
 
 
@@ -179,7 +187,7 @@ def main():
     model = NeuralNetwork(7)
     model.add(NeuralNetwork.layer(5, 3), activation="relu")
     model.add(NeuralNetwork.layer(3, 5), activation="relu")
-    model.add(NeuralNetwork.layer(3, 3), activation="relu")
+    model.add(NeuralNetwork.layer(1, 3), activation="sigmoid")
     model.forward_propagation(X)
 
 
