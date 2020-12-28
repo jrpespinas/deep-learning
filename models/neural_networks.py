@@ -217,6 +217,15 @@ class NeuralNetwork(Activation):
                 print("Loss: {:.5f}".format(loss))
 
     def accuracy(self, y, y_hat):
+        """Computes the accuracy of the model predictions.
+
+        Args:
+            y (numpy.ndarray): The true labels or ground truth.
+            y_hat (numpy.ndarray): The predictions.
+
+        Returns:
+            float: Accuracy of the model.
+        """
         return (y == y_hat).mean()
 
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
