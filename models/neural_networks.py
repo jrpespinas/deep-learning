@@ -203,15 +203,21 @@ class NeuralNetwork(Activation):
             verbosity (True): Displays loss during training.
         """
         loss_history = []
+        accuracy_history = []
 
         for i in range(epochs):
             predictions = self.forward_propagation(X)
             loss = self.cost_function(y, predictions)
             loss_history.append(loss)
+            accuracy = self.accuracy(y, predictions)
+            accuracy_history.append(accuracy)
             self.backward_propagation(y, predictions, learning_rate)
 
             if verbosity:
                 print("Loss: {:.5f}".format(loss))
+
+    def accuracy(self, y, y_hat):
+        return (y == y_hat).mean()
 
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
