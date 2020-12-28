@@ -167,13 +167,6 @@ class NeuralNetwork(Activation):
             if verbosity:
                 print("Loss: {:.5f}".format(loss))
 
-
-    def _check_dimensions(self, current_layer, previous_layer, layer_num):
-        assert current_layer.shape[1] == previous_layer.shape[0], \
-            "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
-                layer_num, layer_num-1
-        )
-
     def _forward_step(self, W, A, b, activation):
         if activation == "relu":
             g = self.relu
