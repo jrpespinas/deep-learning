@@ -247,8 +247,12 @@ class NeuralNetwork(Activation):
 
 
 def main():
+<<<<<<< HEAD
     print("Hello, this is the Neural Network Class script")
     
+=======
+   print("Hello, this is the Neural Network class script.") 
+>>>>>>> 3fecd1c8eb0af2f424b867a2d32fa4ae933bd5eb
 
 if __name__ == "__main__":
     main()
