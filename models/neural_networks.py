@@ -2,6 +2,7 @@
 
 import numpy as np
 
+
 class Activation:
     def __init__(self):
         self.activation_functions = [
@@ -23,6 +24,7 @@ class Activation:
     def sigmoid_prime(self, z):
         return self.sigmoid(z) * (1 - self.sigmoid(z))
 
+
 class NeuralNetwork(Activation):
     """Neural Network class implemented in Numpy.
 
@@ -32,7 +34,7 @@ class NeuralNetwork(Activation):
 
     Note:
         More methods and functionality will be included in future works.
-    
+
     Args:
         seed (int): initialize pseudo-random number generation.
 
@@ -42,6 +44,7 @@ class NeuralNetwork(Activation):
         cache (:obj:`list` of :obj:`float`): Temporary storage of computations
             for backward propagation.
     """
+
     def __init__(self, seed):
         super().__init__()
         np.random.seed(seed)
@@ -168,25 +171,26 @@ class NeuralNetwork(Activation):
         dA_previous = - (np.divide(y, y_hat) + np.divide(1 - y, 1 - y_hat))
         for layer_num, layer in reversed(list(enumerate(self.architecture))):
             layer_num += 1
-            
+
             dA_current = dA_previous
-            Z = self.cache["Z" + str(layer_num)]
-            A_previous = self.cache["A" + str(layer_num-1)]
+            Z = self.cache[layer_num - 1]["Z" + str(layer_num)]
+            A_previous = self.cache[layer_num - 1]["A" + str(layer_num-1)]
             activation = layer["activation" + str(layer_num)]
             weights = layer["W" + str(layer_num)]
             bias = layer["b" + str(layer_num)]
-            
-            dA_previous, dW, db = self._backward_step(A_previous, dA_current, 
-                m, weights, Z, activation)
-            
-            updated_weights, updated_bias = self._update_parameters(dW, db, 
-                weights, bias, learning_rate)
 
-            self.architecture[layer_num - 1]["W" + str(layer_num)] = updated_weights
-            self.architecture[layer_num - 1]["b" + str(layer_num)] = updated_bias
-        
+            dA_previous, dW, db = self._backward_step(A_previous, dA_current,
+                                                      m, weights, Z, activation)
 
-    def train(self, X, y, epochs: int, learning_rate: float = 0.01, 
+            new_weights, new_bias = self._update_parameters(dW, db, weights,
+                                                            bias, learning_rate)
+
+            self.architecture[layer_num - 1]["W" +
+                                             str(layer_num)] = new_weights
+            self.architecture[layer_num - 1]["b" +
+                                             str(layer_num)] = new_bias
+
+    def train(self, X, y, epochs: int, learning_rate: float = 0.01,
               verbosity: bool = True):
         """Gradient Descent
 
@@ -208,7 +212,6 @@ class NeuralNetwork(Activation):
 
             if verbosity:
                 print("Loss: {:.5f}".format(loss))
-
 
     def _check_dimensions(self, current_layer, previous_layer, layer_num):
         assert current_layer.shape[1] == previous_layer.shape[0], \
@@ -232,10 +235,10 @@ class NeuralNetwork(Activation):
             g_prime = self.relu_prime
         elif activation == "sigmoid":
             g_prime = self.sigmoid_prime
-        
+
         dZ = np.multiply(dA, g_prime(Z))
         dW = np.dot(dZ, A_previous.T) / m
-        db = np.sum(dZ, axis=1, keepdims=True) / m 
+        db = np.sum(dZ, axis=1, keepdims=True) / m
         dA_previous = np.dot(W.T, dZ)
 
         return dA_previous, dW, db
@@ -247,7 +250,8 @@ class NeuralNetwork(Activation):
 
 
 def main():
-   print("Hello, this is the Neural Network class script.") 
+    print("Hello, this is the Neural Network class script.")
+
 
 if __name__ == "__main__":
     main()
