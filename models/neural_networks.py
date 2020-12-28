@@ -60,40 +60,6 @@ class NeuralNetwork(Activation):
 
         return parameters
 
-    def add(self, parameters, activation="relu"):
-        """
-        Adds the weights the initialized layers to the architecture.
-
-        Note: 
-            Change the activation function at the output layer.
-
-        Args:
-            parameters (numpy.ndarray): Weights and bias.
-            activation (:obj:`str`, optional): Activation function.
-
-        Example:
-            >>> model = NeuralNetwork()
-            >>> model.add(NeuralNetwork.layer(5, 21), activation="relu")
-            >>> model.add(NeuralNetwork.layer(1, 5), activation="sigmoid")
-        """
-        assert activation in self.activation_functions, \
-            "ERROR: Activation not supported"
-
-        current_weights = parameters[0]
-        current_bias = parameters[1]
-
-        layer_num = len(self.architecture) + 1
-        self.architecture.append({
-            "W" + str(layer_num): current_weights,
-            "b" + str(layer_num): current_bias,
-            "activation" + str(layer_num): activation
-        })
-
-        if layer_num >= 2:
-            previous_weights = self.architecture[-2]["W" + str(layer_num - 1)]
-            self._check_dimensions(
-                current_weights, previous_weights, layer_num)
-
     def forward_propagation(self, X):
         """
         Predicts the values for X.
