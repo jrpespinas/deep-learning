@@ -39,14 +39,26 @@ class NeuralNetwork(Activation):
     Attributes:
         architecture (:obj:`list` of :obj:`dict`): The structure 
             of the Neural Network.
-        cache (:obj:`list` of :obj:`float`): Temporary storage of computations
-            for backward propagation.
     """
-    def __init__(self, seed):
+    def __init__(self, seed, architecture):
         super().__init__()
         np.random.seed(seed)
-        self.architecture = []
-        self.cache = []
+        self.architecture = architecture
+    
+    def initialize_layers(self, constant: float = 0.01):
+        number_of_layers = len(self.architecture)
+        parameters = {}
+
+        for layer_num, layer in enumerate(self.architecture):
+            layer_num += 1
+            input_dims = layer["input_dim"]
+            output_dims = layer["output_dim"]
+
+            parameters["W" + str(layer_num)] = np.random.randn(output_dims,
+                input_dims) * constant
+            parameters["b" + str(layer_num)] = np.zeros((output_dims, 1))
+
+        return parameters
 
     @staticmethod
     def layer(output_dims, input_dims, constant: float = 0.01):
