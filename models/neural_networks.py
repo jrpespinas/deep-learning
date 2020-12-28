@@ -60,26 +60,6 @@ class NeuralNetwork(Activation):
 
         return parameters
 
-    @staticmethod
-    def layer(output_dims, input_dims, constant: float = 0.01):
-        """Initializes random weights of a single hidden layer.
-
-        Args:
-            output_dims (int): Number of hidden units at the current layer.
-            input_dims (int): Number of hidden units at the previous layer.
-            constant (:obj:`float`, optional): Number to scale down weights.
-
-        Returns:
-            parameters (:obj:`list` of :obj:`numpy.ndarray`): List containing 
-                the intialized weights and bias
-        """
-        weights = np.random.randn(output_dims, input_dims) * constant
-        bias = np.zeros((output_dims, 1))
-
-        parameters = [weights, bias]
-
-        return parameters
-
     def add(self, parameters, activation="relu"):
         """
         Adds the weights the initialized layers to the architecture.
