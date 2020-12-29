@@ -81,6 +81,9 @@ class NeuralNetwork(Activation):
             bias = parameters["b" + str(layer_num)]
             activation = layer["activation"]
 
+            assert activation in self.activation_functions, \
+                "ERROR: Activation not supported"
+                
             A_current, Z_current = self._forward_step(weights, A_previous,
                                                       bias, activation)
 
@@ -144,7 +147,7 @@ class NeuralNetwork(Activation):
         
         return gradients
 
-    def train(self, X, y, epochs: int, learning_rate: float = 0.01, 
+    def train(self, X, y, epochs: int, learning_rate: float = 0.1, 
               verbosity: bool = True):
         """Gradient Descent
 
@@ -156,16 +159,19 @@ class NeuralNetwork(Activation):
             learning_rate (float): step size for updating the weight and bias.
             verbosity (True): Displays loss during training.
         """
+        parameters = initialize_layers()
         loss_history = []
+        accuracy_history = []
 
         for i in range(epochs):
-            predictions = self.forward_propagation(X)
-            loss = self.cost_function(y, predictions)
+            y_hat, cache = self.forward_propagation(X, parameters)
+            loss = self.cost_function(y, y_hat)
             loss_history.append(loss)
-            self.backward_propagation(y, predictions, learning_rate)
 
-            if verbosity:
-                print("Loss: {:.5f}".format(loss))
+            gradients = self.backward_propagation(y, y_hat, cache, parameters)
+            parameters = self.update_parameters(parameters, gradients, learning_rate)
+
+        return parameters, loss_history 
 
     def _forward_step(self, W, A, b, activation):
         if activation == "relu":
@@ -193,7 +199,7 @@ class NeuralNetwork(Activation):
 
         return dA_previous, dW, db
 
-    def _update_parameters(self, parameters, gradients, 
+    def update_parameters(self, parameters, gradients, 
         learning_rate: float = 0.1):
         for layer_num, layer in enumerate(self.architecture):
             parameters["W" + str(layer_num)] -= learning_rate * gradients["dW" + str(layer_num)]
@@ -203,12 +209,8 @@ class NeuralNetwork(Activation):
         
 
 def main():
-<<<<<<< HEAD
     print("Hello, this is the Neural Network Class script")
     
-=======
-   print("Hello, this is the Neural Network class script") 
->>>>>>> 3fecd1c8eb0af2f424b867a2d32fa4ae933bd5eb
 
 if __name__ == "__main__":
     main()
