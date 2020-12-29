@@ -193,11 +193,14 @@ class NeuralNetwork(Activation):
 
         return dA_previous, dW, db
 
-    def _update_parameters(self, dW, db, W, b, learning_rate):
-        W -= learning_rate * dW
-        b -= learning_rate * db
-        return W, b
+    def _update_parameters(self, parameters, gradients, 
+        learning_rate: float = 0.1):
+        for layer_num, layer in enumerate(self.architecture):
+            parameters["W" + str(layer_num)] -= learning_rate * gradients["dW" + str(layer_num)]
+            parameters["b" + str(layer_num)] -= learning_rate * gradients["db" + str(layer_num)]
 
+        return parameters
+        
 
 def main():
 <<<<<<< HEAD
