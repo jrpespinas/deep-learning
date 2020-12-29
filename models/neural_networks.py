@@ -60,7 +60,7 @@ class NeuralNetwork(Activation):
 
         return parameters
 
-    def forward_propagation(self, X):
+    def forward_propagation(self, X, parameters):
         """
         Predicts the values for X.
 
@@ -70,26 +70,24 @@ class NeuralNetwork(Activation):
         Returns:
             A_current (numpy.ndarray): The predicted value.
         """
+        cache = {}
         A_current = X
 
         for layer_num, layer in enumerate(self.architecture):
             layer_num += 1
 
             A_previous = A_current
-            weights = layer["W" + str(layer_num)]
-            bias = layer["b" + str(layer_num)]
-            activation = layer["activation" + str(layer_num)]
-            print(weights)
+            weights = parameters["W" + str(layer_num)]
+            bias = parameters["b" + str(layer_num)]
+            activation = layer["activation"]
 
             A_current, Z_current = self._forward_step(weights, A_previous,
                                                       bias, activation)
 
-            self.cache.append({
-                "A" + str(layer_num): A_current,
-                "Z" + str(layer_num): Z_current
-            })
+            cache["A" + str(layer_num)] = A_previous
+            cache["Z" + str(layer_num)] = Z_current
 
-        return A_current
+        return A_current, cache
 
     def cost_function(self, y, y_hat) -> float:
         """
@@ -112,7 +110,7 @@ class NeuralNetwork(Activation):
 
         return total_loss
 
-    def backward_propagation(self, y, y_hat, learning_rate: float = 0.01):
+    def backward_propagation(self, y, y_hat, cache, parameters):
         """Computes the gradients with respect to the loss value.
 
         Args:
@@ -121,28 +119,30 @@ class NeuralNetwork(Activation):
             learning_rate (:obj:`float`, optional): step size
                 for updating the weight and bias.
         """
+        gradients = {}
         m = y.shape[1]
+        y = y.reshape(y_hat.shape)
 
         dA_previous = - (np.divide(y, y_hat) + np.divide(1 - y, 1 - y_hat))
+
         for layer_num, layer in reversed(list(enumerate(self.architecture))):
             layer_num += 1
-            
-            dA_current = dA_previous
-            Z = self.cache["Z" + str(layer_num)]
-            A_previous = self.cache["A" + str(layer_num-1)]
-            activation = layer["activation" + str(layer_num)]
-            weights = layer["W" + str(layer_num)]
-            bias = layer["b" + str(layer_num)]
-            
-            dA_previous, dW, db = self._backward_step(A_previous, dA_current, 
-                m, weights, Z, activation)
-            
-            updated_weights, updated_bias = self._update_parameters(dW, db, 
-                weights, bias, learning_rate)
 
-            self.architecture[layer_num - 1]["W" + str(layer_num)] = updated_weights
-            self.architecture[layer_num - 1]["b" + str(layer_num)] = updated_bias
+            activation = layer["activation"]
+            dA_current = dA_previous
+
+            A_previous = cache["A" + str(layer_num - 1)]
+            Z_current = cache["Z" + str(layer_num)]
+            weights = parameters["W" + str(layer_num)]
+            
+            dA_previous, dW, db = self._backward_step(A_previous, dA_current,
+                                                      weights, Z_current, 
+                                                      activation)
+            
+            gradients["dW" + str(layer_num)] = dW
+            gradients["db" + str(layer_num)] = db
         
+        return gradients
 
     def train(self, X, y, epochs: int, learning_rate: float = 0.01, 
               verbosity: bool = True):
@@ -178,7 +178,9 @@ class NeuralNetwork(Activation):
 
         return A, Z
 
-    def _backward_step(self, A_previous, dA, m, W, Z, activation):
+    def _backward_step(self, A_previous, dA, W, Z, activation):
+        m = A_previous.shape[1]
+
         if activation == "relu":
             g_prime = self.relu_prime
         elif activation == "sigmoid":
@@ -202,7 +204,7 @@ def main():
     print("Hello, this is the Neural Network Class script")
     
 =======
-   print("Hello, this is the Neural Network class script.") 
+   print("Hello, this is the Neural Network class script") 
 >>>>>>> 3fecd1c8eb0af2f424b867a2d32fa4ae933bd5eb
 
 if __name__ == "__main__":
