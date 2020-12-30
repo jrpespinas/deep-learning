@@ -121,8 +121,11 @@ class NeuralNetwork(Activation):
         Args:
             y (numpy.ndarray): The true labels or ground truth.
             y_hat (numpy.ndarray): Predictions of the model.
-            learning_rate (:obj:`float`, optional): step size
-                for updating the weight and bias.
+            cache (dict): The stored computations from forward propagation.
+            parameters (dict): The weights and biases
+
+        Returns: 
+            gradients (dict): The derivatives computed.
         """
         gradients = {}
         m = y.shape[1]
