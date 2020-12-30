@@ -66,9 +66,11 @@ class NeuralNetwork(Activation):
 
         Args:
             X (numpy.ndarray): The input features or dataset.
+            parameters (dict): The weights and biases.
 
         Returns:
             A_current (numpy.ndarray): The predicted value.
+            cache (dict): Stored computations for backpropagation.
         """
         cache = {}
         A_current = X
