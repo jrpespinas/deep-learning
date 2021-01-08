@@ -39,6 +39,14 @@ class NeuralNetwork(Activation):
     Attributes:
         architecture (:obj:`list` of :obj:`dict`): The structure 
             of the Neural Network.
+    
+    Examples:
+        >>> model = [
+        >>>     {"input_dim": 10, "output_dim": 5, "activation": "relu"},
+        >>>     {"input_dim": 5, "output_dim": 2, "activation": "relu"},
+        >>>     {"input_dim": 2, "output_dim": 1, "activation": "sigmoid"}
+        >>> ]
+        >>> model = NeuralNetwork(model)
     """
     def __init__(self, seed, architecture):
         super().__init__()
