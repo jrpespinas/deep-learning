@@ -46,6 +46,16 @@ class NeuralNetwork(Activation):
         self.architecture = architecture
     
     def initialize_layers(self, constant: float = 0.01):
+        """Initializes layers by adding random values to the layers
+        given by `self.architecture`.
+
+        Parameters:
+            constant (:obj:`float`, optional): Value for scaling 
+                random numbers.
+
+        Returns:
+            parameters (dict): The randomly initialized weights and biases.
+        """
         number_of_layers = len(self.architecture)
         parameters = {}
 
