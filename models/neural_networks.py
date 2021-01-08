@@ -161,8 +161,13 @@ class NeuralNetwork(Activation):
             y (numpy.ndarray): The true labels or ground truth.
             epochs (int): number of training iterations 
                 or number of steps of gradient descent.
-            learning_rate (float): step size for updating the weight and bias.
+            learning_rate (:obj:`float`, optional): step size 
+                for updating the weight and bias.
             verbosity (True): Displays loss during training.
+
+        Returns:
+            parameters (dict): The weights and biases
+            loss_history (list): Recorded loss per epoch
         """
         parameters = initialize_layers()
         loss_history = []
@@ -206,6 +211,17 @@ class NeuralNetwork(Activation):
 
     def update_parameters(self, parameters, gradients, 
         learning_rate: float = 0.1):
+        """Updates the parameters after a successful backpropagation.
+
+        Parameters:
+            parameters (dict): The weights and biases.
+            gradients (dict): The computed derivatives.
+            learning_rate (:obj:`float`, optional): step size 
+                for updating the weight and bias.
+
+        Returns:
+            parameters (dict): The weights and biases.
+        """
         for layer_num, layer in enumerate(self.architecture):
             parameters["W" + str(layer_num)] -= learning_rate * gradients["dW" + str(layer_num)]
             parameters["b" + str(layer_num)] -= learning_rate * gradients["db" + str(layer_num)]
