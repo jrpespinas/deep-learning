@@ -41,100 +41,83 @@ class NeuralNetwork(Activation):
     Attributes:
         architecture (:obj:`list` of :obj:`dict`): The structure 
             of the Neural Network.
-        cache (:obj:`list` of :obj:`float`): Temporary storage of computations
-            for backward propagation.
+    
+    Examples:
+        >>> model = [
+        >>>     {"input_dim": 10, "output_dim": 5, "activation": "relu"},
+        >>>     {"input_dim": 5, "output_dim": 2, "activation": "relu"},
+        >>>     {"input_dim": 2, "output_dim": 1, "activation": "sigmoid"}
+        >>> ]
+        >>> model = NeuralNetwork(model)
     """
+<<<<<<< HEAD
 
     def __init__(self, seed):
+=======
+    def __init__(self, seed, architecture):
+>>>>>>> df2898cd5ea3f03d9da6c8a4a9ac4450a479a660
         super().__init__()
         np.random.seed(seed)
-        self.architecture = []
-        self.cache = []
+        self.architecture = architecture
+    
+    def initialize_layers(self, constant: float = 0.01):
+        """Initializes layers by adding random values to the layers
+        given by `self.architecture`.
 
-    @staticmethod
-    def layer(output_dims, input_dims, constant: float = 0.01):
-        """Initializes random weights of a single hidden layer.
-
-        Args:
-            output_dims (int): Number of hidden units at the current layer.
-            input_dims (int): Number of hidden units at the previous layer.
-            constant (:obj:`float`, optional): Number to scale down weights.
+        Parameters:
+            constant (:obj:`float`, optional): Value for scaling 
+                random numbers.
 
         Returns:
-            parameters (:obj:`list` of :obj:`numpy.ndarray`): List containing 
-                the intialized weights and bias
+            parameters (dict): The randomly initialized weights and biases.
         """
-        weights = np.random.randn(output_dims, input_dims) * constant
-        bias = np.zeros((output_dims, 1))
+        number_of_layers = len(self.architecture)
+        parameters = {}
 
-        parameters = [weights, bias]
+        for layer_num, layer in enumerate(self.architecture):
+            layer_num += 1
+            input_dims = layer["input_dim"]
+            output_dims = layer["output_dim"]
+
+            parameters["W" + str(layer_num)] = np.random.randn(output_dims,
+                input_dims) * constant
+            parameters["b" + str(layer_num)] = np.zeros((output_dims, 1))
 
         return parameters
 
-    def add(self, parameters, activation="relu"):
-        """
-        Adds the weights the initialized layers to the architecture.
-
-        Note: 
-            Change the activation function at the output layer.
-
-        Args:
-            parameters (numpy.ndarray): Weights and bias.
-            activation (:obj:`str`, optional): Activation function.
-
-        Example:
-            >>> model = NeuralNetwork()
-            >>> model.add(NeuralNetwork.layer(5, 21), activation="relu")
-            >>> model.add(NeuralNetwork.layer(1, 5), activation="sigmoid")
-        """
-        assert activation in self.activation_functions, \
-            "ERROR: Activation not supported"
-
-        current_weights = parameters[0]
-        current_bias = parameters[1]
-
-        layer_num = len(self.architecture) + 1
-        self.architecture.append({
-            "W" + str(layer_num): current_weights,
-            "b" + str(layer_num): current_bias,
-            "activation" + str(layer_num): activation
-        })
-
-        if layer_num >= 2:
-            previous_weights = self.architecture[-2]["W" + str(layer_num - 1)]
-            self._check_dimensions(
-                current_weights, previous_weights, layer_num)
-
-    def forward_propagation(self, X):
+    def forward_propagation(self, X, parameters):
         """
         Predicts the values for X.
 
         Args:
             X (numpy.ndarray): The input features or dataset.
+            parameters (dict): The weights and biases.
 
         Returns:
             A_current (numpy.ndarray): The predicted value.
+            cache (dict): Stored computations for backpropagation.
         """
+        cache = {}
         A_current = X
 
         for layer_num, layer in enumerate(self.architecture):
             layer_num += 1
 
             A_previous = A_current
-            weights = layer["W" + str(layer_num)]
-            bias = layer["b" + str(layer_num)]
-            activation = layer["activation" + str(layer_num)]
-            print(weights)
+            weights = parameters["W" + str(layer_num)]
+            bias = parameters["b" + str(layer_num)]
+            activation = layer["activation"]
 
+            assert activation in self.activation_functions, \
+                "ERROR: Activation not supported"
+                
             A_current, Z_current = self._forward_step(weights, A_previous,
                                                       bias, activation)
 
-            self.cache.append({
-                "A" + str(layer_num): A_current,
-                "Z" + str(layer_num): Z_current
-            })
+            cache["A" + str(layer_num)] = A_previous
+            cache["Z" + str(layer_num)] = Z_current
 
-        return A_current
+        return A_current, cache
 
     def cost_function(self, y, y_hat) -> float:
         """
@@ -157,21 +140,28 @@ class NeuralNetwork(Activation):
 
         return total_loss
 
-    def backward_propagation(self, y, y_hat, learning_rate: float = 0.01):
+    def backward_propagation(self, y, y_hat, cache, parameters):
         """Computes the gradients with respect to the loss value.
 
         Args:
             y (numpy.ndarray): The true labels or ground truth.
             y_hat (numpy.ndarray): Predictions of the model.
-            learning_rate (:obj:`float`, optional): step size
-                for updating the weight and bias.
+            cache (dict): The stored computations from forward propagation.
+            parameters (dict): The weights and biases
+
+        Returns: 
+            gradients (dict): The derivatives computed.
         """
+        gradients = {}
         m = y.shape[1]
+        y = y.reshape(y_hat.shape)
 
         dA_previous = - (np.divide(y, y_hat) + np.divide(1 - y, 1 - y_hat))
+
         for layer_num, layer in reversed(list(enumerate(self.architecture))):
             layer_num += 1
 
+<<<<<<< HEAD
             dA_current = dA_previous
             Z = self.cache[layer_num - 1]["Z" + str(layer_num)]
             A_previous = self.cache[layer_num - 1]["A" + str(layer_num-1)]
@@ -191,6 +181,25 @@ class NeuralNetwork(Activation):
                                              str(layer_num)] = new_bias
 
     def train(self, X, y, epochs: int, learning_rate: float = 0.01,
+=======
+            activation = layer["activation"]
+            dA_current = dA_previous
+
+            A_previous = cache["A" + str(layer_num - 1)]
+            Z_current = cache["Z" + str(layer_num)]
+            weights = parameters["W" + str(layer_num)]
+            
+            dA_previous, dW, db = self._backward_step(A_previous, dA_current,
+                                                      weights, Z_current, 
+                                                      activation)
+            
+            gradients["dW" + str(layer_num)] = dW
+            gradients["db" + str(layer_num)] = db
+        
+        return gradients
+
+    def train(self, X, y, epochs: int, learning_rate: float = 0.1, 
+>>>>>>> df2898cd5ea3f03d9da6c8a4a9ac4450a479a660
               verbosity: bool = True):
         """Gradient Descent
 
@@ -199,23 +208,33 @@ class NeuralNetwork(Activation):
             y (numpy.ndarray): The true labels or ground truth.
             epochs (int): number of training iterations 
                 or number of steps of gradient descent.
-            learning_rate (float): step size for updating the weight and bias.
+            learning_rate (:obj:`float`, optional): step size 
+                for updating the weight and bias.
             verbosity (True): Displays loss during training.
+
+        Returns:
+            parameters (dict): The weights and biases
+            loss_history (list): Recorded loss per epoch
         """
+        parameters = initialize_layers()
         loss_history = []
         accuracy_history = []
 
         for i in range(epochs):
-            predictions = self.forward_propagation(X)
-            loss = self.cost_function(y, predictions)
+            y_hat, cache = self.forward_propagation(X, parameters)
+            loss = self.cost_function(y, y_hat)
             loss_history.append(loss)
+<<<<<<< HEAD
             accuracy = self.accuracy(y, predictions)
             accuracy_history.append(accuracy)
             self.backward_propagation(y, predictions, learning_rate)
+=======
+>>>>>>> df2898cd5ea3f03d9da6c8a4a9ac4450a479a660
 
-            if verbosity:
-                print("Loss: {:.5f}".format(loss))
+            gradients = self.backward_propagation(y, y_hat, cache, parameters)
+            parameters = self.update_parameters(parameters, gradients, learning_rate)
 
+<<<<<<< HEAD
     def accuracy(self, y, y_hat):
         """Computes the accuracy of the model predictions.
 
@@ -233,6 +252,9 @@ class NeuralNetwork(Activation):
             "ERROR: Dimensions at layer %d and layer %d are not compatible!" % (
                 layer_num, layer_num-1
         )
+=======
+        return parameters, loss_history 
+>>>>>>> df2898cd5ea3f03d9da6c8a4a9ac4450a479a660
 
     def _forward_step(self, W, A, b, activation):
         if activation == "relu":
@@ -245,7 +267,9 @@ class NeuralNetwork(Activation):
 
         return A, Z
 
-    def _backward_step(self, A_previous, dA, m, W, Z, activation):
+    def _backward_step(self, A_previous, dA, W, Z, activation):
+        m = A_previous.shape[1]
+
         if activation == "relu":
             g_prime = self.relu_prime
         elif activation == "sigmoid":
@@ -258,15 +282,34 @@ class NeuralNetwork(Activation):
 
         return dA_previous, dW, db
 
-    def _update_parameters(self, dW, db, W, b, learning_rate):
-        W -= learning_rate * dW
-        b -= learning_rate * db
-        return W, b
+    def update_parameters(self, parameters, gradients, 
+        learning_rate: float = 0.1):
+        """Updates the parameters after a successful backpropagation.
 
+        Parameters:
+            parameters (dict): The weights and biases.
+            gradients (dict): The computed derivatives.
+            learning_rate (:obj:`float`, optional): step size 
+                for updating the weight and bias.
+
+        Returns:
+            parameters (dict): The weights and biases.
+        """
+        for layer_num, layer in enumerate(self.architecture):
+            parameters["W" + str(layer_num)] -= learning_rate * gradients["dW" + str(layer_num)]
+            parameters["b" + str(layer_num)] -= learning_rate * gradients["db" + str(layer_num)]
+
+        return parameters
+        
 
 def main():
+<<<<<<< HEAD
     print("Hello, this is the Neural Network class script.")
 
+=======
+    print("Hello, this is the Neural Network Class script")
+    
+>>>>>>> df2898cd5ea3f03d9da6c8a4a9ac4450a479a660
 
 if __name__ == "__main__":
     main()
