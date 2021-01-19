@@ -127,7 +127,7 @@ class NeuralNetwork(Activation):
 
         loss = np.multiply(y, np.log(y_hat)) + \
             np.multiply((1 - y), np.log(1 - y_hat))
-        total_loss = np.sum(loss) / m
+        total_loss = - np.sum(loss) / m
 
         total_loss = np.squeeze(total_loss)
 
